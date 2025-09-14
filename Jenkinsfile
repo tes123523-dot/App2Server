@@ -2,42 +2,37 @@ pipeline {
     agent any
 
     tools {
-        jdk 'Java21'      // The JDK name you configured in Jenkins
-        maven 'Maven3'    // The Maven name you configured in Jenkins
+        jdk 'Java21'      // Your JDK configured in Jenkins
+        maven 'Maven3'    // Your Maven configured in Jenkins
     }
 
     stages {
         stage('Checkout') {
             steps {
-                // Fetch source code
                 checkout scm
             }
         }
 
         stage('Build') {
             steps {
-                // Clean & build project
-                sh "mvn clean install -DskipTests"
+                bat "mvn clean install -DskipTests"
             }
         }
 
         stage('Test') {
             steps {
-                // Run unit + integration tests
-                sh "mvn test"
+                bat "mvn test"
             }
         }
 
         stage('Package') {
             steps {
-                // Package application (JAR/WAR)
-                sh "mvn package"
+                bat "mvn package"
             }
         }
 
         stage('Archive Artifacts') {
             steps {
-                // Save final build artifact in Jenkins
                 archiveArtifacts artifacts: '**/target/*.jar, **/target/*.war', fingerprint: true
             }
         }
